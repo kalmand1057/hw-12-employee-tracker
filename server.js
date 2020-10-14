@@ -31,15 +31,30 @@ function start() {
       .then(function(answer) {
         // based on their answer, either call the bid or the post functions
         if (answer.category === "DEPARTMENTS") {
-          departments();
+          firstDepartments();
         }
         else if(answer.category === "ROLES") {
-          roles();
+          firstRoles();
         }
         else if(answer.category === "EMPLOYEES") {
-          employees();
+          firstEmployees();
         } else {
           connection.end();
         }
       });
+  }
+
+  //Function for Departments
+  function firstDepartments() {
+    console.log("department");
+  }
+
+  //Function for Roles
+  function firstRoles() {
+    console.log("roles");
+  }
+
+  //function for Employees
+  function firstEmployees() {
+    console.log("employees");
   }
