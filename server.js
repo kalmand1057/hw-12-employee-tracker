@@ -16,5 +16,30 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    //next function
+    start();
   });
+
+  // Start Function
+function start() {
+    inquirer
+      .prompt({
+        name: "category",
+        type: "list",
+        message: "Which category would you like to select?",
+        choices: ["DEPARTMENTS", "ROLES", "EMPLOYEES"]
+      })
+      .then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.category === "DEPARTMENTS") {
+          departments();
+        }
+        else if(answer.category === "ROLES") {
+          roles();
+        }
+        else if(answer.category === "EMPLOYEES") {
+          employees();
+        } else {
+          connection.end();
+        }
+      });
+  }
