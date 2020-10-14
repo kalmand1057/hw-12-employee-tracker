@@ -177,7 +177,15 @@ function start() {
     });
   }
 
-  function viewRoles() {}
+  function viewRoles() {
+    console.log("Selecting all roles...\n");
+    connection.query("SELECT * FROM business_role", function(err, res) {
+      if (err) throw err;
+      // Log all results of the SELECT statement
+      console.table(res);
+      connection.end();
+    });
+  }
 
 
   function updateRoles() {
