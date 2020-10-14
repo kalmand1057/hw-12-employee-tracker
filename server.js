@@ -46,13 +46,65 @@ function start() {
 
   //Function for Departments
   function firstDepartments() {
-    console.log("department");
+    inquirer
+    .prompt({
+      name: "avDepartments",
+      type: "list",
+      message: "Would you like to ADD to or VIEW the departments?",
+      choices: ["ADD", "VIEW"]
+    })
+    .then(function(answer) {
+      // based on their answer, either call the bid or the post functions
+      if (answer.avDepartments === "ADD") {
+        addDepartments();
+      } else if(answer.avDepartments === "VIEW") {
+        viewDepartments();
+      } else {
+        connection.end();
+      }
+    });
   }
+
+  function addDepartments() {
+    inquirer
+    .prompt([
+      {
+        name: "idDepartment",
+        type: "input",
+        message: "What is the ID of the department you would like to add?"
+      },
+      {
+        name: "nameDepartment",
+        type: "input",
+        message: "What is the name of the department you would like to add?"
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          id: answer.idDepartment,
+          department_name: answer.nameDepartment
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your auction was created successfully!");
+          // re-prompt the user for if they want to bid or post
+          //start();
+        }
+      );
+    });
+  }
+
+  function viewDepartments() {}
+
 
   //Function for Roles
   function firstRoles() {
     console.log("roles");
   }
+
 
   //function for Employees
   function firstEmployees() {
