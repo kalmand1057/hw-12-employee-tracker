@@ -97,7 +97,15 @@ function start() {
     });
   }
 
-  function viewDepartments() {}
+  function viewDepartments() {
+    console.log("Selecting all departments...\n");
+    connection.query("SELECT * FROM department", function(err, res) {
+      if (err) throw err;
+      // Log all results of the SELECT statement
+      console.table(res);
+      connection.end();
+    });
+  }
 
 
   //Function for Roles
@@ -171,7 +179,28 @@ function start() {
 
   function viewRoles() {}
 
-  function updateRoles() {}
+
+  function updateRoles() {
+    // inquirer
+    // .prompt([
+    //   {
+    //     name: "choiceRoles",
+    //     type: "rawlist",
+    //     choices: function() {
+    //       var choiceArray = [];
+    //       //might have to replace "results" with "business_role" in for loop parameters
+    //       for (var i = 0; i < results.length; i++) {
+    //         choiceArray.push(results[i].title);
+    //       }
+    //       return choiceArray;
+    //     },
+    //     message: "Which role would you like to update?"
+    //   }
+    // ])
+    // .then(function(answer) {
+    //   console.log(choiceArray);
+    // });
+  }
 
 
   //function for Employees
