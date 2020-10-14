@@ -41,7 +41,7 @@ function start() {
         } else {
           connection.end();
         }
-      });
+    });
   }
 
   //Function for Departments
@@ -89,7 +89,7 @@ function start() {
         },
         function(err) {
           if (err) throw err;
-          console.log("Your auction was created successfully!");
+          console.log("Your department was added successfully!");
           // re-prompt the user for if they want to bid or post
           //start();
         }
@@ -102,11 +102,105 @@ function start() {
 
   //Function for Roles
   function firstRoles() {
-    console.log("roles");
+    inquirer
+    .prompt({
+        name: "avuRoles",
+        type: "list",
+        message: "Would you like to ADD to, VIEW or UPDATE the roles?",
+        choices: ["ADD", "VIEW", "UPDATE"]
+        })
+        .then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.avuRoles === "ADD") {
+            addRoles();
+        }
+        else if(answer.avuRoles === "VIEW") {
+            viewRoles();
+        }
+        else if(answer.avuRoles === "UPDATE") {
+            updateRoles();
+        } else {
+            connection.end();
+        }
+    });
   }
+
+  function addRoles() {
+    inquirer
+    .prompt([
+      {
+        name: "idRole",
+        type: "input",
+        message: "What is the ID of the role you would like to add?"
+      },
+      {
+        name: "titleRole",
+        type: "input",
+        message: "What is the title of the role you would like to add?"
+      },
+      {
+        name: "salaryRole",
+        type: "input",
+        message: "What is the salary of the role you would like to add?"
+      },
+      {
+        name: "department_idRole",
+        type: "input",
+        message: "What is the department ID of the role you would like to add?"
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO business_role SET ?",
+        {
+          id: answer.idRole,
+          title: answer.titleRole,
+          salary: answer.salaryRole,
+          department_id: answer.department_idRole
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your role was added successfully!");
+          // re-prompt the user for if they want to bid or post
+          //start();
+        }
+      );
+    });
+  }
+
+  function viewRoles() {}
+
+  function updateRoles() {}
 
 
   //function for Employees
   function firstEmployees() {
-    console.log("employees");
+    inquirer
+    .prompt({
+        name: "avuEmployees",
+        type: "list",
+        message: "Would you like to ADD to, VIEW or UPDATE the employees?",
+        choices: ["ADD", "VIEW", "UPDATE"]
+        })
+        .then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.avuEmployees === "ADD") {
+            addEmployees();
+        }
+        else if(answer.avuEmployees === "VIEW") {
+            viewEmployees();
+        }
+        else if(answer.avuEmployees === "UPDATE") {
+            updateEmployees();
+        } else {
+            connection.end();
+        }
+    });
   }
+
+  function addEmployees() {}
+
+  function viewEmployees() {}
+  
+  function updateEmployees() {}
