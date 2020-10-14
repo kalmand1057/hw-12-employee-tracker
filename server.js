@@ -199,8 +199,56 @@ function start() {
     });
   }
 
-  function addEmployees() {}
+  function addEmployees() {
+    inquirer
+    .prompt([
+      {
+        name: "idEmployee",
+        type: "input",
+        message: "What is the ID of the employee you would like to add?"
+      },
+      {
+        name: "firstNameEmployee",
+        type: "input",
+        message: "What is the first name of the employee you would like to add?"
+      },
+      {
+        name: "lastNameEmployee",
+        type: "input",
+        message: "What is the last name of the employee you would like to add?"
+      },
+      {
+        name: "idRoleEmployee",
+        type: "input",
+        message: "What is the role ID of the employee you would like to add?"
+      },
+      {
+        name: "idManagerEmployee",
+        type: "input",
+        message: "What is the manager's ID of the employee you would like to add?"
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          id: answer.idEmployee,
+          first_name: answer.firstNameEmployee,
+          last_name: answer.lastNameEmployee,
+          role_id: answer.idRoleEmployee,
+          manager_id: answer.idManagerEmployee
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your employee was added successfully!");
+          // re-prompt the user for if they want to bid or post
+          //start();
+        }
+      );
+    });
+  }
 
   function viewEmployees() {}
-  
+
   function updateEmployees() {}
