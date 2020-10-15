@@ -29,7 +29,6 @@ function start() {
         choices: ["DEPARTMENTS", "ROLES", "EMPLOYEES"]
       })
       .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
         if (answer.category === "DEPARTMENTS") {
           firstDepartments();
         }
@@ -54,7 +53,6 @@ function start() {
       choices: ["ADD", "VIEW"]
     })
     .then(function(answer) {
-      // based on their answer, either call the bid or the post functions
       if (answer.avDepartments === "ADD") {
         addDepartments();
       } else if(answer.avDepartments === "VIEW") {
@@ -80,7 +78,6 @@ function start() {
       }
     ])
     .then(function(answer) {
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         "INSERT INTO department SET ?",
         {
@@ -90,8 +87,7 @@ function start() {
         function(err) {
           if (err) throw err;
           console.log("Your department was added successfully!");
-          // re-prompt the user for if they want to bid or post
-          //start();
+          start();
         }
       );
     });
@@ -101,7 +97,6 @@ function start() {
     console.log("Selecting all departments...\n");
     connection.query("SELECT * FROM department", function(err, res) {
       if (err) throw err;
-      // Log all results of the SELECT statement
       console.table(res);
       connection.end();
     });
@@ -118,7 +113,6 @@ function start() {
         choices: ["ADD", "VIEW", "UPDATE"]
         })
         .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
         if (answer.avuRoles === "ADD") {
             addRoles();
         }
@@ -158,7 +152,6 @@ function start() {
       }
     ])
     .then(function(answer) {
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         "INSERT INTO business_role SET ?",
         {
@@ -170,8 +163,7 @@ function start() {
         function(err) {
           if (err) throw err;
           console.log("Your role was added successfully!");
-          // re-prompt the user for if they want to bid or post
-          //start();
+          start();
         }
       );
     });
@@ -181,7 +173,6 @@ function start() {
     console.log("Selecting all roles...\n");
     connection.query("SELECT * FROM business_role", function(err, res) {
       if (err) throw err;
-      // Log all results of the SELECT statement
       console.table(res);
       connection.end();
     });
@@ -189,25 +180,32 @@ function start() {
 
 
   function updateRoles() {
-    // inquirer
-    // .prompt([
-    //   {
-    //     name: "choiceRoles",
-    //     type: "rawlist",
-    //     choices: function() {
-    //       var choiceArray = [];
-    //       //might have to replace "results" with "business_role" in for loop parameters
-    //       for (var i = 0; i < results.length; i++) {
-    //         choiceArray.push(results[i].title);
-    //       }
-    //       return choiceArray;
-    //     },
-    //     message: "Which role would you like to update?"
-    //   }
-    // ])
-    // .then(function(answer) {
-    //   console.log(choiceArray);
-    // });
+    connection.query("SELECT * FROM business_role", function(err, results) {
+      if (err) throw err;
+      inquirer
+      .prompt([
+        {
+          name: "updateRole",
+          type: "rawlist",
+          choices: function() {
+            var choiceArray = [];
+            for (var i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].title);
+            }
+            return choiceArray;
+          },
+          message:"Which role would you like to update?"
+        }
+      ]).then(function(updateAnswer) {
+        var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].title === updateAnswer.choice) {
+            chosenItem = results[i];
+          }
+        }
+       console.log(updateAnswer);
+      });
+    });
   }
 
 
@@ -221,7 +219,6 @@ function start() {
         choices: ["ADD", "VIEW", "UPDATE"]
         })
         .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
         if (answer.avuEmployees === "ADD") {
             addEmployees();
         }
@@ -266,7 +263,6 @@ function start() {
       }
     ])
     .then(function(answer) {
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         "INSERT INTO employee SET ?",
         {
@@ -279,8 +275,7 @@ function start() {
         function(err) {
           if (err) throw err;
           console.log("Your employee was added successfully!");
-          // re-prompt the user for if they want to bid or post
-          //start();
+          start();
         }
       );
     });
@@ -290,7 +285,6 @@ function start() {
     console.log("Selecting all employees...\n");
     connection.query("SELECT * FROM employee", function(err, res) {
       if (err) throw err;
-      // Log all results of the SELECT statement
       console.table(res);
       connection.end();
     });
